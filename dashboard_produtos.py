@@ -1,9 +1,14 @@
 import json
+import os
 
+from dotenv import load_dotenv
 import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
 from databricks import sql
+
+# Carrega as variáveis definidas no arquivo .env
+load_dotenv()
 
 
 # ==========================================================
@@ -13,9 +18,9 @@ class DatabricksConnector:
 
     def conexao_databricks(self):
         connection = sql.connect(
-            server_hostname="dbc-60646d9c-c02c.cloud.databricks.com",
-            http_path="/sql/1.0/warehouses/5fa82bee3829f650",
-            access_token="dapi32afc189d54cfaed3b3deed885507e3b",
+            server_hostname=os.getenv("DATABRICKS_SERVER_HOSTNAME"),
+            http_path=os.getenv("DATABRICKS_HTTP_PATH"),
+            access_token=os.getenv("DATABRICKS_ACCESS_TOKEN"),
         )
         self.cursor = connection.cursor()
         return connection
